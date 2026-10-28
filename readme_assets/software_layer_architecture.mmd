@@ -1,0 +1,18 @@
+flowchart TD
+    A[App BLE Thread]
+    B[Build or select<br/>app-owned beacon payload]
+    C[rs_ble_broadcast_Start]
+    D[Validate advertising payload<br/>and parameters]
+    E[R_BLE_GAP_SetAdvParam]
+    F[R_BLE_VS_SetTxPower]
+    G[R_BLE_GAP_SetAdvSresData]
+    H[R_BLE_GAP_StartAdv]
+    I[BLE radio]
+    J[Phone scanner or BLE sniffer]
+    K[Dual-format only:<br/>FreeRTOS timer fires every adv_interval / 2]
+    L[beacon_set_timer_cb<br/>signals BLE thread]
+    M[beacon_set_switch<br/>select next payload]
+    N[rs_ble_broadcast_Stop]
+
+    A --> B --> C --> D --> E --> F --> G --> H --> I --> J
+    H -.-> K --> L --> M --> N --> C

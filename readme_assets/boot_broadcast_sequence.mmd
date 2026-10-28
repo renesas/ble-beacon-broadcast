@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant App as App / BLE Thread
+    participant Radio as BLE Radio
+    participant rs as rs_ble_broadcast
+    participant Scanner as Phone Scanner / Sniffer
+
+    App->>Radio: Open g_ble_abs0
+    Note over App,Radio: Radio boots and loads GTL firmware
+    Radio-->>App: GAPM_DEVICE_READY_IND
+    App->>Radio: R_BLE_GAP_Init()
+
+    loop Until GAP-ready
+        App->>Radio: R_BLE_Execute()
+        Radio-->>App: BLE stack events
+    end
+
+    App->>App: Build or select app beacon payload
+    App->>rs: rs_ble_broadcast_Start(bytes, length, params)
+    rs->>Radio: R_BLE_GAP_SetAdvParam()
+    rs->>Radio: R_BLE_VS_SetTxPower()
+    rs->>Radio: R_BLE_GAP_SetAdvSresData()
+    rs->>Radio: R_BLE_GAP_StartAdv()
+
+    Radio-->>Scanner: Non-connectable advertising frame
