@@ -3,15 +3,17 @@
 
 set(RASC_TARGET_DEVICE R7FA6E2BB)
 set(RASC_TARGET_ARCH cortex-m33)
-set(RASC_PROJECT_NAME ble_beacon_broadcasting_example_ra6e2)
+set(RASC_PROJECT_NAME fpb-ra6e2)
 SET(RASC_TOOLCHAIN_NAME LLVMARM)
 
 SET(RASC_CMAKE_ASM_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;-mthumb;-mlittle-endian;-x;assembler-with-cpp;-MP")
-SET(RASC_CMAKE_C_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;-mthumb;-mlittle-endian;-std=c99;-MP")
-SET(RASC_CMAKE_CXX_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;-mthumb;-mlittle-endian;-std=c++11;-MP")
-SET(RASC_CMAKE_EXE_LINKER_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;--target=arm-none-eabi;-mthumb;-mlittle-endian;-T;fsp.lld;-Wl,-Map=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map;-Wl,--gc-sections;-Wl,--cref;-Wl,--icf=none;-o;${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.elf")
-SET(RASC_CMAKE_DEFINITIONS "_RENESAS_RA_;_RA_CORE=CM33;_RA_ORDINAL=1")
+SET(RASC_CMAKE_C_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;-mthumb;-mlittle-endian;-std=c99;-MP;-Os")
+SET(RASC_CMAKE_CXX_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;-mthumb;-mlittle-endian;-std=c++11;-MP;-Os")
+SET(RASC_CMAKE_EXE_LINKER_FLAGS "-mfloat-abi=hard;--target=arm-none-eabi;-mcpu=cortex-m33;-mfpu=fpv5-sp-d16;-Wunused;-Wuninitialized;-Wall;-Wextra;-Wmissing-declarations;-Wconversion;-Wpointer-arith;-Wshadow;-Waggregate-return;-Wno-parentheses-equality;-Wfloat-equal;-fshort-enums;-fno-unroll-loops;-fmessage-length=0;-fsigned-char;-ffunction-sections;-fdata-sections;--target=arm-none-eabi;-mthumb;-mlittle-endian;-T;script/fsp.lld;-Wl,-Map=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map;-Wl,--gc-sections;-Wl,--cref;-Wl,--icf=none;-o;${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.elf;-Wl,-z,norelro")
+SET(RASC_CMAKE_DEFINITIONS "_RA_CORE=CM33;_RA_ORDINAL=1;_RENESAS_RA_")
 SET(RASC_ASM_FILES "${CMAKE_CURRENT_SOURCE_DIR}/ra_gen/*.asm")
+
+SET(EXCLUDED_SOURCE_FILES )
 
 cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH PROJECT_PARENT_DIR)
 
@@ -24,6 +26,10 @@ if(DEVICE AND (NOT "${RASC_TARGET_DEVICE}" STREQUAL "${DEVICE}"))
 	message(FATAL_ERROR "Incorrect device specified ${DEVICE} but project is built for ${RASC_TARGET_DEVICE}")
 endif()
 
+if(RENESAS_IDE AND RENESAS_IDE STREQUAL "e2studio" AND EXISTS "${CMAKE_CURRENT_BINARY_DIR}/.fsp_content_generation_error.txt" )
+  file(READ "${CMAKE_CURRENT_BINARY_DIR}/.fsp_content_generation_error.txt" contentGenerationError 1000)
+  message(FATAL_ERROR "DDSC Content generation failed: ${contentGenerationError}")
+endif()
 
 # ADD COMPILE FLAGS FOR GCC version >= 12.2
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL 12.2)

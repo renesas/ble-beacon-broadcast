@@ -266,7 +266,7 @@ Use section A for e² studio and section B for VS Code.
 1. Launch VS Code and select File → Open Workspace from File....
 2. Navigate to and select `fpb_ra6e2.code-workspace` (`examples/ra6e2/fpb-ra6e2/fpb_ra6e2.code-workspace`).
 3. Click Open. The workspace opens with the `ble_beacon_broadcasting_example_ra6e2` board project, including its local `src/app` (app sources) and `src/rs_ble_broadcast` (the committed RS core copy).
-4. Select the configured ARM LLVM / Ninja build environment when prompted.
+4. Select the kit `Renesas Platform: ARM LLVM Toolchain - 21.1.1` when prompted.
 5. Use the default Debug build configuration.
 
 ### Step 3: Review FSP Configuration
